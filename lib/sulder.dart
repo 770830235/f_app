@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'language_button.dart';
 
 class UsageSliderScreen extends StatefulWidget {
   const UsageSliderScreen({super.key});
@@ -15,9 +18,9 @@ class _UsageSliderScreenState extends State<UsageSliderScreen> {
   double get _estimatedCost => _kwh * _pricePerKwh;
 
   String get _usageLabel {
-    if (_kwh < 200) return 'منخفض';
-    if (_kwh < 450) return 'متوسط';
-    return 'مرتفع';
+    if (_kwh < 200) return 'منخفض'.tr;
+    if (_kwh < 450) return 'متوسط'.tr;
+    return 'مرتفع'.tr;
   }
 
   IconData get _usageIcon {
@@ -34,16 +37,17 @@ class _UsageSliderScreenState extends State<UsageSliderScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('لوحة استهلاك الكهرباء'),
+        title: Text('لوحة استهلاك الكهرباء'.tr),
         centerTitle: true,
+        actions: const [LanguageToggleButton()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
           children: [
             _HeaderCard(
-              title: 'استهلاكك هذا الشهر',
-              subtitle: 'حرّك السلايدر لتحديد الاستهلاك المتوقع',
+              title: 'استهلاكك هذا الشهر'.tr,
+              subtitle: 'حرّك السلايدر لتحديد الاستهلاك المتوقع'.tr,
               icon: Icons.home_outlined,
             ),
             const SizedBox(height: 12),
@@ -63,16 +67,14 @@ class _UsageSliderScreenState extends State<UsageSliderScreen> {
                         Icon(_usageIcon, color: cs.primary),
                         const SizedBox(width: 8),
                         Text(
-                          'الاستهلاك: ${_kwh.toStringAsFixed(0)} kWh',
+                          '${'data'.tr}: ${_kwh.toStringAsFixed(0)} kWh',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
                         const Spacer(),
-                        Chip(
-                          label: Text(_usageLabel),
-                        ),
+                        Chip(label: Text(_usageLabel)),
                       ],
                     ),
                     const SizedBox(height: 10),
@@ -105,20 +107,20 @@ class _UsageSliderScreenState extends State<UsageSliderScreen> {
                       runSpacing: 10,
                       children: [
                         _InfoPill(
-                          title: 'السعر لكل kWh',
+                          title: 'السعر لكل kWh'.tr,
                           value: '\$${_pricePerKwh.toStringAsFixed(2)}',
                           icon: Icons.attach_money,
                         ),
                         _InfoPill(
-                          title: 'نسبة الاستهلاك',
+                          title: 'نسبة الاستهلاك'.tr,
                           value: '${(_progress * 100).toStringAsFixed(0)}%',
                           icon: Icons.speed,
                         ),
                         _InfoPill(
-                          title: 'نصيحة',
+                          title: 'نصيحة'.tr,
                           value: _kwh > 450
-                              ? 'قلّل استخدام السخان/المكيف'
-                              : 'ممتاز، استهلاكك ضمن الطبيعي',
+                              ? 'قلّل استخدام السخان/المكيف'.tr
+                              : 'ممتاز، استهلاكك ضمن الطبيعي'.tr,
                           icon: Icons.tips_and_updates_outlined,
                         ),
                       ],
@@ -130,22 +132,20 @@ class _UsageSliderScreenState extends State<UsageSliderScreen> {
             const SizedBox(height: 12),
             FilledButton.icon(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'تم حفظ التقدير: ${_kwh.toStringAsFixed(0)} kWh بتكلفة \$${_estimatedCost.toStringAsFixed(2)}',
-                    ),
-                  ),
+                Get.snackbar(
+                  'لوحة استهلاك الكهرباء'.tr,
+                  'تم حفظ التقدير: ${_kwh.toStringAsFixed(0)} kWh بتكلفة \$${_estimatedCost.toStringAsFixed(2)}',
+                  snackPosition: SnackPosition.BOTTOM,
                 );
               },
               icon: const Icon(Icons.save_outlined),
-              label: const Text('حفظ التقدير'),
+              label: Text('حفظ التقدير'.tr),
             ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: () => setState(() => _kwh = 250),
               icon: const Icon(Icons.refresh),
-              label: const Text('إرجاع للقيمة الافتراضية'),
+              label: Text('إرجاع للقيمة الافتراضية'.tr),
             ),
           ],
         ),
@@ -196,10 +196,7 @@ class _HeaderCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Text(
-                    subtitle,
-                    style: TextStyle(color: cs.onPrimaryContainer),
-                  ),
+                  Text(subtitle, style: TextStyle(color: cs.onPrimaryContainer)),
                 ],
               ),
             ),
@@ -228,26 +225,29 @@ class _InfoPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       decoration: BoxDecoration(
+        color: cs.surfaceVariant,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: cs.outlineVariant),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 18, color: cs.primary),
+          Icon(icon, size: 18),
           const SizedBox(width: 8),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: const TextStyle(fontSize: 12)),
-              Text(
-                value,
-                style: const TextStyle(fontWeight: FontWeight.w700),
-              ),
+              Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
+              const SizedBox(height: 2),
+              Text(value),
             ],
           ),
         ],
       ),
     );
   }
+}
+
+// alias used in routes
+class ElectricityUsageDashboard extends UsageSliderScreen {
+  const ElectricityUsageDashboard({super.key});
 }

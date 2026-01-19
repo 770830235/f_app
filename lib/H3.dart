@@ -1,6 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'language_button.dart';
 
 class H3 extends StatefulWidget {
   List<String> studint;
@@ -14,8 +17,9 @@ class _MyWidgetState extends State<H3> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('my file students'),
+        title: Text('my file students'.tr),
         centerTitle: true,
+        actions: const [LanguageToggleButton()],
       ),
       body: Center(
         child: Container(

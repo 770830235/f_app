@@ -1,34 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'user.dart';
+import 'app_routes.dart';
+import 'language_button.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  final _nameC = TextEditingController();
-  final _emailC = TextEditingController();
-  final _passC = TextEditingController();
+class RegisterController extends GetxController {
+  final nameC = TextEditingController();
+  final emailC = TextEditingController();
+  final passC = TextEditingController();
 
   @override
-  void dispose() {
-    _nameC.dispose();
-    _emailC.dispose();
-    _passC.dispose();
-    super.dispose();
+  void onClose() {
+    nameC.dispose();
+    emailC.dispose();
+    passC.dispose();
+    super.onClose();
   }
 
-  void _handleRegister() {
-    final name = _nameC.text.trim();
-    final email = _emailC.text.trim();
-    final pass = _passC.text;
+  void handleRegister() {
+    final name = nameC.text.trim();
+    final email = emailC.text.trim();
+    final pass = passC.text;
 
     if (name.isEmpty || email.isEmpty || pass.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('أكمل جميع الحقول')),
+      Get.snackbar(
+        'إنشاء حساب'.tr,
+        'أكمل جميع الحقول'.tr,
+        snackPosition: SnackPosition.BOTTOM,
       );
       return;
     }
@@ -36,61 +35,78 @@ class _RegisterPageState extends State<RegisterPage> {
     final ok = UserStore.register(name: name, email: email, password: pass);
 
     if (!ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('هذا البريد مستخدم مسبقاً')),
+      Get.snackbar(
+        'إنشاء حساب'.tr,
+        'هذا البريد مستخدم مسبقاً'.tr,
+        snackPosition: SnackPosition.BOTTOM,
       );
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('تم إنشاء الحساب بنجاح. سجّل دخول الآن')),
+    Get.snackbar(
+      'إنشاء حساب'.tr,
+      'تم إنشاء الحساب بنجاح. سجّل دخول الآن'.tr,
+      snackPosition: SnackPosition.BOTTOM,
     );
-    Navigator.pushReplacementNamed(context, '/login');
+
+    Get.offAllNamed(AppRoutes.login);
   }
+}
+
+class RegisterPage extends StatelessWidget {
+  const RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final c = Get.put(RegisterController());
+
     return Scaffold(
-      appBar: AppBar(title: const Text('إنشاء حساب')),
+      appBar: AppBar(
+        title: Text('إنشاء حساب'.tr),
+        actions: const [LanguageToggleButton()],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextField(
-              controller: _nameC,
-              decoration: const InputDecoration(
-                labelText: 'الاسم الكامل',
-                border: OutlineInputBorder(),
+              controller: c.nameC,
+              decoration: InputDecoration(
+                labelText: 'الاسم الكامل'.tr,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 15),
             TextField(
-              controller: _emailC,
+              controller: c.emailC,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'البريد الإلكتروني',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'البريد الإلكتروني'.tr,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 15),
             TextField(
-              controller: _passC,
+              controller: c.passC,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'كلمة المرور',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'كلمة المرور'.tr,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: _handleRegister,
-              child: const Text('إنشاء الحساب'),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: c.handleRegister,
+                child: Text('إنشاء الحساب'.tr),
+              ),
             ),
             const SizedBox(height: 15),
             TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('العودة لتسجيل الدخول'),
+              onPressed: () => Get.offAllNamed(AppRoutes.login),
+              child: Text('العودة لتسجيل الدخول'.tr),
             ),
           ],
         ),

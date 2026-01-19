@@ -1,5 +1,8 @@
 import 'package:f_app/H3.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import 'language_button.dart';
 
 class H2 extends StatefulWidget {
   const H2({super.key});
@@ -17,9 +20,10 @@ class _H2State extends State<H2> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 76, 163, 234),
         title: Text(
-          "data",
+          "data".tr,
           textAlign: TextAlign.center,
         ),
+        actions: const [LanguageToggleButton()],
       ),
       body: Column(
         children: [
@@ -35,12 +39,12 @@ class _H2State extends State<H2> {
                     color: Colors.blue,
                   ),
                   label: Text(
-                    "NAME",
+                    "NAME".tr,
                     style: TextStyle(
                       fontSize: 20,
                     ),
                   ),
-                  hintText: "input name",
+                  hintText: "input name".tr,
                   hintStyle:
                       TextStyle(color: const Color.fromARGB(255, 96, 86, 86)),
                   filled: true,
@@ -52,12 +56,10 @@ class _H2State extends State<H2> {
                     ElevatedButton(
             onPressed: () {
               setState(() {});
-               Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => H3(studint: studint,),
-              ));
+              Get.to(() => H3(studint: studint));
             },
             child: Text(
-              "show",
+              "show".tr,
               style: TextStyle(color: Colors.white),
             ),
             style: ButtonStyle(
@@ -70,7 +72,7 @@ class _H2State extends State<H2> {
                 studint.add(_name.text);
             },
             child: Text(
-              "SAVE",
+              "SAVE".tr,
               style: TextStyle(color: Colors.white),
             ),
             style: ButtonStyle(

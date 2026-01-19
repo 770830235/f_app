@@ -1,6 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'language_button.dart';
 
 class ProfilePage extends StatefulWidget {
   final String name;
@@ -27,15 +31,17 @@ class _ProfilePageState extends State<ProfilePage> {
         imageQuality: 85,
       );
 
-      if (picked == null) return; // المستخدم لغى الاختيار
+      if (picked == null) return;
 
       setState(() {
         _imageFile = File(picked.path);
       });
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('تعذر اختيار الصورة: $e')),
+      Get.snackbar(
+        'الملف الشخصي'.tr,
+        ('تعذر اختيار الصورة:'.tr + ' $e'),
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
@@ -54,7 +60,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('الملف الشخصي'),
+        title: Text('الملف الشخصي'.tr),
+        actions: const [LanguageToggleButton()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -65,14 +72,14 @@ class _ProfilePageState extends State<ProfilePage> {
             ElevatedButton.icon(
               onPressed: _pickImageFromGallery,
               icon: const Icon(Icons.photo_library),
-              label: const Text('اختيار صورة من الجوال'),
+              label: Text('اختيار صورة من الجوال'.tr),
             ),
             const SizedBox(height: 20),
             Card(
               child: ListTile(
                 leading: const Icon(Icons.badge),
                 title: Text(widget.name.isEmpty ? '—' : widget.name),
-                subtitle: const Text('الاسم'),
+                subtitle: Text('الاسم'.tr),
               ),
             ),
             const SizedBox(height: 10),
@@ -80,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ListTile(
                 leading: const Icon(Icons.email),
                 title: Text(widget.email.isEmpty ? '—' : widget.email),
-                subtitle: const Text('البريد الإلكتروني'),
+                subtitle: Text('البريد الإلكتروني'.tr),
               ),
             ),
           ],

@@ -1,90 +1,103 @@
-import 'package:f_app/home.dart';
-import 'package:f_app/user.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'user.dart';
+import 'app_routes.dart';
+import 'language_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginController extends GetxController {
+  final emailC = TextEditingController();
+  final passC = TextEditingController();
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
+  // @override
+  // void onClose() {
+  //   emailC.dispose();
+  //   passC.dispose();
+  //   super.onClose();
+  // }
 
-class _LoginPageState extends State<LoginPage> {
-  final _emailC = TextEditingController();
-  final _passC = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailC.dispose();
-    _passC.dispose();
-    super.dispose();
-  }
-
-  void _handleLogin() {
+  void handleLogin() {
     if (!UserStore.hasAnyAccount()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('لا يوجد حساب. قم بإنشاء حساب جديد أولاً')),
+      Get.snackbar(
+        'تسجيل الدخول'.tr,
+        'لا يوجد حساب. قم بإنشاء حساب جديد أولاً'.tr,
+        snackPosition: SnackPosition.BOTTOM,
       );
       return;
     }
 
     final ok = UserStore.login(
-      email: _emailC.text,
-      password: _passC.text,
+      email: emailC.text,
+      password: passC.text,
     );
 
     if (ok) {
-       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => Myapp(username: '', attempts: [],
-         
-        ),
-      ));
+      Get.offAllNamed(
+        AppRoutes.home,
+        arguments: {
+          'username': '',
+          'attempts': <Map<String, String>>[],
+        },
+      );
     } else {
-      // هنا تشمل (غير موجود) أو (كلمة مرور غلط)
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-            content: Text('البريد غير موجود أو كلمة المرور غير صحيحة')),
+      Get.snackbar(
+        'تسجيل الدخول'.tr,
+        'البريد غير موجود أو كلمة المرور غير صحيحة'.tr,
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
+}
+
+class LoginPage extends GetView<LoginController> {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('تسجيل الدخول')),
-      body: Padding(
+      appBar: AppBar(
+        title: Text('تسجيل الدخول'.tr),
+        actions: const [LanguageToggleButton()],
+      ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: 60),
+
             TextField(
-              controller: _emailC,
+              controller: controller.emailC,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'البريد الإلكتروني',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'البريد الإلكتروني'.tr,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 15),
+
             TextField(
-              controller: _passC,
+              controller: controller.passC,
               obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'كلمة المرور',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: 'كلمة المرور'.tr,
+                border: const OutlineInputBorder(),
               ),
             ),
             const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: _handleLogin,
-              child: const Text('تسجيل الدخول'),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: controller.handleLogin,
+                child: Text('تسجيل الدخول'.tr),
+              ),
             ),
             const SizedBox(height: 15),
+
             TextButton(
-              onPressed: () => Navigator.pushNamed(context, '/register'),
-              child: const Text('إنشاء حساب جديد'),
+              onPressed: () => Get.toNamed(AppRoutes.register),
+              child: Text('إنشاء حساب جديد'.tr),
             ),
           ],
         ),
