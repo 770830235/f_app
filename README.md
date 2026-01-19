@@ -1,16 +1,52 @@
-# f_app
+# 📱 F_APP – Flutter Application
 
-A new Flutter project.
+تطبيق موبايل مطوّر باستخدام **Flutter**، يقدّم واجهة استخدام حديثة وسهلة، مع نظام تسجيل دخول، إنشاء حساب، صفحة رئيسية، وملف شخصي للمستخدم.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## ✨ المميزات
+- تسجيل الدخول (Login)
+- إنشاء حساب (Create Account)
+- الصفحة الرئيسية (Home)
+- الملف الشخصي (Profile)
+- دعم تعدد الصفحات والتنقل
+- واجهات UI منظمة
+- جاهز للتطوير والتوسعة
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠️ التقنيات المستخدمة
+- Flutter
+- Dart
+- Material Design
+- Android / iOS
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 📸 صور من التطبيق
+
+### 🔐 تسجيل الدخول
+![Login](lib/screenshots/Logen.png)
+
+### 📝 إنشاء حساب
+![Create Account](lib/screenshots/create%20accoent.png)
+
+### 🏠 الصفحة الرئيسية
+![Home](lib/screenshots/Home%20page.png)
+
+### 👤 الملف الشخصي
+![Profile](lib/screenshots/profile.png)
+
+### 📄 صفحة إضافية
+![Page](lib/screenshots/page1.png)
+
+### 🎓 الطلاب
+![Students](lib/screenshots/students.png)
+
+---
+
+## 🚀 تشغيل المشروع
+
+1. تأكد من تثبيت Flutter:
+```bash
+flutter --version
